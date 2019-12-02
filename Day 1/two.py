@@ -11,7 +11,7 @@
 # What is the sum of the fuel requirements for all of the modules on your spacecraft when also taking into account the mass of the added fuel? (Calculate the fuel requirements for each module separately, then add them all up at the end.)
 
 def rec_fuel(fuel):
-    new_fuel = int(fuel / 3) - 2
+    new_fuel = fuel // 3 - 2
     if new_fuel <= 0:
         return 0
     return new_fuel + rec_fuel(new_fuel)

@@ -51,22 +51,16 @@
 # Once you have a working computer, the first step is to restore the gravity assist program (your puzzle input) to the "1202 program alarm" state it had just before the last computer caught fire. To do this, before running the program, replace position 1 with the value 12 and replace position 2 with the value 2. What value is left at position 0 after the program halts?
 
 
-def solver(status: int, a:int, b:int):
-    if status == 1:
-        return a + b
-    elif status == 2:
-        return a * b
-    else:
-        raise Exception('Incorrect status raised : %s' % status)
-
-def solve(data: list, id: int):
-    if data[id] == 99:
-        return
-    data[data[id + 3]] = solver(data[id], data[data[id + 1]], data[data[id + 2]])
-    solve(data, id + 4)
-
 data = [int(v) for v in open('input').readline().split(',')]
 data[1] = 12
 data[2] = 2
-solve(data, 0)
+i = 0
+while data[i] != 99:
+    if data[i] == 1:
+        data[data[i + 3]] = data[data[i + 1]] + data[data[i + 2]]
+    elif data[i] == 2:
+        data[data[i + 3]] = data[data[i + 1]] * data[data[i + 2]]
+    else:
+        raise Exception('Incorrect status raised : %s' % status)
+    i += 4
 print(data[0])

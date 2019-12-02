@@ -18,20 +18,6 @@
 
 # Find the input noun and verb that cause the program to produce the output 19690720. What is 100 * noun + verb? (For example, if noun=12 and verb=2, the answer would be 1202.)
 
-def solver(status: int, a:int, b:int):
-    if status == 1:
-        return a + b
-    elif status == 2:
-        return a * b
-    else:
-        raise Exception('Incorrect status raised : %s' % status)
-
-def solve(data: list, id: int):
-    if data[id] == 99:
-        return
-    data[data[id + 3]] = solver(data[id], data[data[id + 1]], data[data[id + 2]])
-    solve(data, id + 4)
-
 data = [int(v) for v in open('input').readline().split(',')]
 
 for noun in range(100):
@@ -39,7 +25,15 @@ for noun in range(100):
         tmp = data.copy()
         tmp[1] = noun
         tmp[2] = verb
-        solve(tmp, 0)
+        i = 0
+        while tmp[i] != 99:
+            if tmp[i] == 1:
+                tmp[tmp[i + 3]] = tmp[tmp[i + 1]] + tmp[tmp[i + 2]]
+            elif tmp[i] == 2:
+                tmp[tmp[i + 3]] = tmp[tmp[i + 1]] * tmp[tmp[i + 2]]
+            else:
+                raise Exception('Incorrect status raised : %s' % status)
+            i += 4
         if tmp[0] == 19690720:
             print('Noun : %s, Verb : %s, Result : %s' % (noun, verb, 100 * noun + verb))
             exit()

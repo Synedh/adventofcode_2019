@@ -21,4 +21,4 @@
 
 # What is the sum of the fuel requirements for all of the modules on your spacecraft?
 
-print(sum([int(int(v) / 3) - 2 for v in open('input').readlines()]))
+print(sum([int(v)//3-2 for v in open('input').readlines()]))

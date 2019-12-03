@@ -1,0 +1,75 @@
+# --- Day 3: Crossed Wires ---
+
+# The gravity assist was successful, and you're well on your way to the Venus refuelling station. During the rush back on Earth, the fuel management system wasn't completely installed, so that's next on the priority list.
+
+# Opening the front panel reveals a jumble of wires. Specifically, two wires are connected to a central port and extend outward on a grid. You trace the path each wire takes as it leaves the central port, one wire per line of text (your puzzle input).
+
+# The wires twist and turn, but the two wires occasionally cross paths. To fix the circuit, you need to find the intersection point closest to the central port. Because the wires are on a grid, use the Manhattan distance for this measurement. While the wires do technically cross right at the central port where they both start, this point does not count, nor does a wire count as crossing with itself.
+
+# For example, if the first wire's path is R8,U5,L5,D3, then starting from the central port (o), it goes right 8, up 5, left 5, and finally down 3:
+
+# ...........
+# ...........
+# ...........
+# ....+----+.
+# ....|....|.
+# ....|....|.
+# ....|....|.
+# .........|.
+# .o-------+.
+# ...........
+
+# Then, if the second wire's path is U7,R6,D4,L4, it goes up 7, right 6, down 4, and left 4:
+
+# ...........
+# .+-----+...
+# .|.....|...
+# .|..+--X-+.
+# .|..|..|.|.
+# .|.-X--+.|.
+# .|..|....|.
+# .|.......|.
+# .o-------+.
+# ...........
+
+# These wires cross at two locations (marked X), but the lower-left one is closer to the central port: its distance is 3 + 3 = 6.
+
+# Here are a few more examples:
+
+#     R75,D30,R83,U83,L12,D49,R71,U7,L72
+#     U62,R66,U55,R34,D71,R55,D58,R83 = distance 159
+#     R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
+#     U98,R91,D20,R16,D67,R40,U7,R15,U6,R7 = distance 135
+
+# What is the Manhattan distance from the central port to the closest intersection?
+
+
+def next_cell(start:list, way:str, distance:int):
+    if way == 'U':
+        return [(start[0] + i, start[1]) for i in range(1, distance + 1)]
+    elif way == 'R':
+        return [(start[0], start[1] + i) for i in range(1, distance + 1)]
+    elif way == 'D':
+        return [(start[0] - i, start[1]) for i in range(1, distance + 1)]
+    elif way == 'L':
+        return [(start[0], start[1] - i) for i in range(1, distance + 1)]
+    else:
+        raise Exception('Incorrect way given : %s.' % way)
+
+
+def get_cells(path: list):
+    cells = [(0, 0)]
+    for i in path:
+        tmp = next_cell(cells[-1], i[0], int(i[1:]))
+        cells += tmp
+    return cells[1:]
+
+
+with open('input') as file:
+    p1 = get_cells(file.readline()[:-1].split(','))
+    p2 = get_cells(file.readline()[:-1].split(','))
+
+    min_value = 9223372036854775807
+    for cell in set(p1).intersection(p2):
+        min_value = min(min_value, abs(cell[0]) + abs(cell[1]))
+    print(min_value)

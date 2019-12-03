@@ -44,8 +44,7 @@ def next_cell(start:list, way:str, distance:int):
 def get_cells(path: list):
     cells = [(0, 0)]
     for i in path:
-        tmp = next_cell(cells[-1], i[0], int(i[1:]))
-        cells += tmp
+        cells = next_cell(cells[-1], i[0], int(i[1:]))
     return cells[1:]
     
 

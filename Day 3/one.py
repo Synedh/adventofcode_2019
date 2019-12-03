@@ -46,13 +46,13 @@
 
 def next_cell(start:list, way:str, distance:int):
     if way == 'U':
-        return [(start[0] + i, start[1]) for i in range(1, distance + 1)]
+        return [(start[0] + i, start[1]) for i in range(1, distance)]
     elif way == 'R':
-        return [(start[0], start[1] + i) for i in range(1, distance + 1)]
+        return [(start[0], start[1] + i) for i in range(1, distance)]
     elif way == 'D':
-        return [(start[0] - i, start[1]) for i in range(1, distance + 1)]
+        return [(start[0] - i, start[1]) for i in range(1, distance)]
     elif way == 'L':
-        return [(start[0], start[1] - i) for i in range(1, distance + 1)]
+        return [(start[0], start[1] - i) for i in range(1, distance)]
     else:
         raise Exception('Incorrect way given : %s.' % way)
 
@@ -60,8 +60,7 @@ def next_cell(start:list, way:str, distance:int):
 def get_cells(path: list):
     cells = [(0, 0)]
     for i in path:
-        tmp = next_cell(cells[-1], i[0], int(i[1:]))
-        cells += tmp
+        cells = next_cell(cells[-1], i[0], int(i[1:]) + 1)
     return cells[1:]
 
 

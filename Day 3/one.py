@@ -46,13 +46,13 @@
 
 def next_cell(start:list, way:str, distance:int):
     if way == 'U':
-        return [(start[0] + i, start[1]) for i in range(1, distance)]
+        return [(start[0] + i, start[1]) for i in range(1, distance + 1)]
     elif way == 'R':
-        return [(start[0], start[1] + i) for i in range(1, distance)]
+        return [(start[0], start[1] + i) for i in range(1, distance + 1)]
     elif way == 'D':
-        return [(start[0] - i, start[1]) for i in range(1, distance)]
+        return [(start[0] - i, start[1]) for i in range(1, distance + 1)]
     elif way == 'L':
-        return [(start[0], start[1] - i) for i in range(1, distance)]
+        return [(start[0], start[1] - i) for i in range(1, distance + 1)]
     else:
         raise Exception('Incorrect way given : %s.' % way)
 
@@ -60,7 +60,7 @@ def next_cell(start:list, way:str, distance:int):
 def get_cells(path: list):
     cells = [(0, 0)]
     for i in path:
-        cells = next_cell(cells[-1], i[0], int(i[1:]) + 1)
+        cells += next_cell(cells[-1], i[0], int(i[1:]))
     return cells[1:]
 
 
@@ -68,7 +68,4 @@ with open('input') as file:
     p1 = get_cells(file.readline()[:-1].split(','))
     p2 = get_cells(file.readline()[:-1].split(','))
 
-    min_value = 9223372036854775807
-    for cell in set(p1).intersection(p2):
-        min_value = min(min_value, abs(cell[0]) + abs(cell[1]))
-    print(min_value)
+    print(min([abs(cell[0]) + abs(cell[1]) for cell in set(p1).intersection(p2)]))

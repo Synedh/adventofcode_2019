@@ -44,7 +44,7 @@ def next_cell(start:list, way:str, distance:int):
 def get_cells(path: list):
     cells = [(0, 0)]
     for i in path:
-        cells = next_cell(cells[-1], i[0], int(i[1:]))
+        cells += next_cell(cells[-1], i[0], int(i[1:]))
     return cells[1:]
     
 
@@ -52,7 +52,4 @@ with open('input') as file:
     p1 = get_cells(file.readline()[:-1].split(','))
     p2 = get_cells(file.readline()[:-1].split(','))
 
-    min_value = 9223372036854775807
-    for cell in set(p1).intersection(p2):
-        min_value = min(min_value, p1.index(cell) + p2.index(cell) + 2)
-    print(min_value)
+    print(min([p1.index(cell) + p2.index(cell) + 2 for cell in set(p1).intersection(p2)]))
